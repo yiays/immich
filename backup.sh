@@ -48,7 +48,9 @@ backup() {
         echo "File stored at: $LOCAL_BACKUP_DIR/$BACKUP_FILE"
     else
         echo "Error: Backup failed. Please check the permissions and file paths." 1>&2
-        discord.sh --webhook-url "$WEBHOOK_URL" --text "Failed to back up Immich"
+        if [ -n $WEBHOOK_URL ]; then
+            discord.sh --webhook-url "$WEBHOOK_URL" --text "Failed to back up Immich"
+        fi
         exit 1
     fi
 }
@@ -91,7 +93,9 @@ sync() {
 
     if [ $SUCCESS -eq 0 ]; then
         echo "Error: Failed to connect to $HOST after $MAX_RETRIES attempts. Exiting." 1>&2
-        discord.sh --webhook-url "$WEBHOOK_URL" --text "Failed to sync Immich backup to $HOST"
+        if [ -n $WEBHOOK_URL ]; then
+            discord.sh --webhook-url "$WEBHOOK_URL" --text "Failed to sync Immich backup to $HOST"
+        fi
         exit 1
     fi
 
@@ -129,7 +133,9 @@ sync() {
 
     if [ $SUCCESS -eq 0 ]; then
         echo "Error: Failed to finish copying backup to backup site." 1>&2
-        discord.sh --webhook-url "$WEBHOOK_URL" --text "Interrupted sync of Immich backup to $HOST"
+        if [ -n $WEBHOOK_URL ]; then
+            discord.sh --webhook-url "$WEBHOOK_URL" --text "Interrupted sync of Immich backup to $HOST"
+        fi
     fi
 }
 
