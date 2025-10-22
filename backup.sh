@@ -6,25 +6,6 @@
 #   Both Windows (10, 11) and Linux (bash, rsync) are supported.
 # ====================================================================
 
-# --- Configuration ---
-
-# Remote server parameters
-REMOTE_PLATFORM="linux" # options are windows, linux
-REMOTE_HOST="" # host must use public key authentication
-REMOTE_DIR="/mnt/immich" # spaces in this directory are not supported
-REMOTE_DELAY=0 # copy immediately once backup is complete
-
-# Local server parameters
-LAN_PLATFORM="windows" # options are windows, linux
-LAN_HOST="komi" # host must use public key authentication
-LAN_DIR="y:/Immich" # spaces in this directory are not supported
-LAN_DELAY=28800 # wait 8 hours when computer is more likely to be online
-
-# Number of resume attempts per server
-MAX_RETRIES=10
-RETRY_DELAY_SECONDS=3600  # 1 hour
-
-
 # Always start in the script directory
 cd "${0%/*}"
 
