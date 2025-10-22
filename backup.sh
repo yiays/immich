@@ -3,6 +3,7 @@
 # ====================================================================
 # Backs up an immich instance, then syncs to two servers;
 #   One local (LAN), one remote, as a part of a 3-2-1 backup strategy
+#   Both Windows (10, 11) and Linux (bash, rsync) are supported.
 # ====================================================================
 
 # --- Configuration ---
@@ -91,9 +92,9 @@ sync() {
 
         # Delete old backups on the remote server
         if [ $PLATFORM == "windows" ]; then
-            ssh "$HOST" "powershell Remove-Item -Force $DIR/*"
+            ssh "$HOST" "powershell -NoProfile -Command \"Get-ChildItem -Path '$DIR' -File | Sort-Object -Property CreationTime -Descending | Select-Object -Skip 1 | Remove-Item -Force\""
         else
-            ssh "$HOST" "rm -f $DIR/*"
+            ssh "$HOST" "cd $DIR && ls -1t | tail -n +2 | xargs -r rm -f --"
         fi
 
         if [ $? -eq 0 ]; then
