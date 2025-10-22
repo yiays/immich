@@ -75,9 +75,9 @@ sync() {
 
         # Delete old backups on the remote server
         if [ $PLATFORM == "windows" ]; then
-            ssh "$HOST" "powershell -NoProfile -Command \"Get-ChildItem -Path '$DIR' -File | Sort-Object -Property CreationTime -Descending | Select-Object -Skip 1 | Remove-Item -Force\""
+            ssh "$HOST" "powershell -NoProfile -Command \"Remove-Item -Force $DIR/*.part; Get-ChildItem -Path '$DIR' -File | Sort-Object -Property CreationTime -Descending | Select-Object -Skip 1 | Remove-Item -Force\""
         else
-            ssh "$HOST" "cd $DIR && ls -1t | tail -n +2 | xargs -r rm -f --"
+            ssh "$HOST" "cd $DIR && rm -f *.part && ls -1t | tail -n +2 | xargs -r rm -f --"
         fi
 
         if [ $? -eq 0 ]; then
